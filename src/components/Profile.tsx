@@ -1,5 +1,6 @@
 import {
   useAccount,
+  useBalance,
   useConnect,
   useDisconnect,
   useEnsAvatar,
@@ -13,14 +14,22 @@ export function Profile() {
   const { connect, connectors, error, isLoading, pendingConnector } =
     useConnect();
   const { disconnect } = useDisconnect();
+  const { data: balance } = useBalance({ address });
 
   if (isConnected) {
-    console.log('ens: ', ensAvatar);
     return (
       <div>
         <img src={ensAvatar ? ensAvatar : ''} alt="ENS Avatar" />
         <div>{ensName ? `${ensName} (${address})` : address}</div>
         <div>{connector ? `Connected to ${connector.name}` : ''}</div>
+        <div>
+          balance
+          <ul>
+            <li>decimals: {balance?.decimals}</li>
+            <li>formatted: {balance?.formatted}</li>
+            <li>symbol: {balance?.symbol}</li>
+          </ul>
+        </div>
         <button onClick={() => disconnect()}>Disconnect</button>
       </div>
     );
